@@ -23,20 +23,17 @@ async function run(){
 
     try{
 
-        const productCollection = client.db('productCollection').collection('product');
+        const categoryCollection = client.db('oldIsGold').collection('categories');
 
-        app.get('/products',async(req,res)=>{
+        app.get('/categories',async(req,res)=>{
 
-            const page = parseInt(req.query.page);
-            const size = parseInt(req.query.size);
 
-            console.log(page,size)
             const query = {}
-            const cursor =  productCollection.find(query)
-            const products =await cursor.skip(page*size).limit(size).toArray()
-            const count = await productCollection.estimatedDocumentCount()
+            const cursor =  categoryCollection.find(query)
+            const categories =await cursor.toArray()
+       
 
-            res.send({count,products})
+            res.send(categories)
         })
 
     }
