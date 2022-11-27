@@ -26,6 +26,7 @@ async function run(){
         const categoryCollection = client.db('oldIsGold').collection('categories');
         const orderCollection = client.db('oldIsGold').collection('order');
         const userCollection = client.db('oldIsGold').collection('user');
+        const productCollection = client.db('oldIsGold').collection('product');
 
         app.get('/categories',async(req,res)=>{
 
@@ -60,6 +61,11 @@ async function run(){
             const result = await orderCollection.insertOne(order);
             res.send(result);
         })
+        app.post('/newproduct',async(req,res)=>{
+            const product = req.body;
+            const result = await productCollection.insertOne(product);
+            res.send(result);
+        })
 
         app.get('/order',async(req,res)=>{
             const currentEmail = req.query.email;
@@ -71,6 +77,12 @@ async function run(){
             const query = {};
             const users = await userCollection.find(query).toArray();
             res.send(users);
+        })
+        app.get('/myproduct',async(req,res)=>{
+            const currentEmail = req.query.email;
+            const query = {email:currentEmail};
+            const product = await productCollection.find(query).toArray();
+            res.send(product);
         })
 
         app.get('/user',async(req,res)=>{
