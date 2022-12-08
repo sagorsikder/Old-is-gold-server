@@ -74,6 +74,16 @@ async function run(){
             const order = await orderCollection.find(query).toArray();
             res.send(order);
         })
+
+        app.get('/seller',async(req,res)=>{
+
+            const sellerEmail = req.query.email;
+           
+            const query = { email: sellerEmail };
+            const result = await userCollection.deleteOne(query);
+            res.send(result)
+        })
+
         app.get('/users',async(req,res)=>{
             const query = {};
             const users = await userCollection.find(query).toArray();
