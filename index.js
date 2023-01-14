@@ -91,9 +91,46 @@ async function run(){
         })
         app.get('/myproduct',async(req,res)=>{
             const currentEmail = req.query.email;
-            const query = {email:currentEmail};
+            const query = {email:currentEmail,advertise:'no'};
             const product = await productCollection.find(query).toArray();
             res.send(product);
+        })
+        app.get('/advertisement',async(req,res)=>{
+            const currentEmail = req.query.email;
+            const query = {email:currentEmail,advertise:'yes'};
+            const product = await productCollection.find(query).limit(4).toArray();
+            res.send(product);
+        })
+
+        app.post('/delete1',async(req,res)=>{
+            const id = req.query.id;
+            console.log('Update id ',id)
+            
+          if(id){  const filter = {_id:ObjectId(id)}
+          const options = {upsert:true}
+          const updateDoc = {
+              $set : {
+                  advertise : 'yes'
+              }
+          }
+
+          const products = await productCollection.updateOne(filter,updateDoc,options);
+          res.send(products)}
+        })
+        app.post('/delete2',async(req,res)=>{
+            const id = req.query.id;
+            console.log('Update id ',id)
+            
+          if(id){  const filter = {_id:ObjectId(id)}
+          const options = {upsert:true}
+          const updateDoc = {
+              $set : {
+                  advertise : 'no'
+              }
+          }
+
+          const products = await productCollection.updateOne(filter,updateDoc,options);
+          res.send(products)}
         })
 
         app.get('/user',async(req,res)=>{
